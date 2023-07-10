@@ -1,1 +1,1 @@
-Simple GRPC API with frontend react
+Simple chi API with frontend react
