@@ -1,1 +1,1 @@
-Simple chi API with frontend react
+Simple REST API with frontend react
