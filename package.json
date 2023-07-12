@@ -1,0 +1,16 @@
+{
+  "name": "simple-grpc-react",
+  "private": "true",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/jandranrebbalangue/simple-chi-react.git",
+  "author": "Jan Dranreb Balangue <jandranrebbalangue@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start:backend": "cd backend && go run main.go",
+    "start:app": "yarn workspace app dev"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
