@@ -1,1 +1,1 @@
-Simple REST API with frontend react
+# This is for expirement purposes only using Go with react
