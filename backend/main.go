@@ -76,6 +76,8 @@ func main() {
 		Timeout:     time.Hour,
 		MaxRefresh:  time.Hour,
 		IdentityKey: identityKey,
+		SendCookie:  true,
+		CookieName:  "jwt",
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
 			if v, ok := data.(*User); ok {
 				return jwt.MapClaims{
@@ -131,6 +133,13 @@ func main() {
 				"token":  token,
 			})
 		},
+		LoginResponse: func(c *gin.Context, code int, token string, expire time.Time) {
+			c.JSON(code, gin.H{
+				"code":    code,
+				"message": token,
+				"expire":  expire.Format(time.RFC3339),
+			})
+		},
 	})
 	if err != nil {
 		log.Fatal("JWT Error:" + err.Error())
@@ -140,6 +149,7 @@ func main() {
 		log.Fatal("authMiddleware.MiddlewareInit() Error:" + errInit.Error())
 	}
 	r.POST("/login", authMiddleware.LoginHandler)
+	r.POST("/logout", authMiddleware.LogoutHandler)
 	r.NoRoute(authMiddleware.MiddlewareFunc(), func(c *gin.Context) {
 		claims := jwt.ExtractClaims(c)
 		log.Printf("NoRoute claims:%#v\n", claims)
