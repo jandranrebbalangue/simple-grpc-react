@@ -124,6 +124,13 @@ func main() {
 		TokenLookup:   "header: Authorization,query:token,cookie:jwt",
 		TokenHeadName: "Bearer",
 		TimeFunc:      time.Now,
+		RefreshResponse: func(c *gin.Context, code int, token string, expire time.Time) {
+			c.JSON(code, gin.H{
+				"code":   code,
+				"expire": expire.Format(time.RFC3339),
+				"token":  token,
+			})
+		},
 	})
 	if err != nil {
 		log.Fatal("JWT Error:" + err.Error())
