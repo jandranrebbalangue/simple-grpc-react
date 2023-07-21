@@ -8,19 +8,8 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { fetcher } from "./constants";
+import { TodosProps, fetcher, addTodo } from "./constants";
 
-type TodosProps = {
-  id: string;
-  text: string;
-};
-
-async function addTodo(body: TodosProps) {
-  await fetch(`${import.meta.env.VITE_BASE_URL}/todos`, {
-    method: "POST",
-    body: JSON.stringify(body),
-  });
-}
 function App() {
   const { data, isLoading, mutate } = useSWR("/todos", fetcher);
   if (isLoading) return <CircularProgress />;
