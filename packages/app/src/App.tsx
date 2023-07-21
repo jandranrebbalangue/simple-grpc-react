@@ -1,35 +1,62 @@
-import React, { useReducer } from "react";
-import "./App.css";
-import { initialState, todoReducer } from "./reducers/todosReducer";
+import useSWR from "swr";
+import {
+  CircularProgress,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import { fetcher } from "./constants";
 
-type TodoProps = {
-  id: number;
+type TodosProps = {
+  id: string;
   text: string;
-  done: boolean;
 };
-function App() {
-  const [state, dispatch] = useReducer(todoReducer, initialState);
 
+async function addTodo(body: TodosProps) {
+  await fetch(`${import.meta.env.VITE_BASE_URL}/todos`, {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+function App() {
+  const { data, isLoading, mutate } = useSWR("/todos", fetcher);
+  if (isLoading) return <CircularProgress />;
   return (
     <>
-      <div className="card">
-        {state.map((item: TodoProps) => {
-          return (
-            <React.Fragment key={item.id}>
-              <p>
-                {item.id} &nbsp;
-                {item.text}
-              </p>
-              <p>{item.done}</p>
-              <button
-                onClick={() => dispatch({ type: "DELETE", payload: item.id })}
-              >
-                Delete
-              </button>
-            </React.Fragment>
-          );
-        })}
-      </div>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>Anime</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((item: TodosProps) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.id}</TableCell>
+                <TableCell>{item.text}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <button
+        onClick={async () => {
+          const newTodo = {
+            id: "3",
+            text: "oshi no ko",
+          };
+          await mutate(addTodo(newTodo), {
+            optimisticData: [newTodo],
+          });
+        }}
+      >
+        Add Todo
+      </button>
     </>
   );
 }

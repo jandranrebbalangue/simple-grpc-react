@@ -1,2 +1,3 @@
 grpc-go
 node_modules
+./packages/app/.env

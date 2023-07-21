@@ -6,6 +6,7 @@ import (
 	"time"
 
 	jwt "github.com/appleboy/gin-jwt/v2"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,6 +20,7 @@ var todos = []todo{{ID: "1", Text: "Jujutsu Kaisen"}, {ID: "2", Text: "Engage Ki
 func getTodos(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, todos)
 }
+
 func postTodos(c *gin.Context) {
 	var newTodo todo
 	if err := c.BindJSON(&newTodo); err != nil {
@@ -67,6 +69,14 @@ type User struct {
 
 func main() {
 	r := gin.Default()
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowMethods:     []string{"GET", "POST"},
+		AllowHeaders:     []string{"Content-Type", "Content-Length", "Accept-Encoding", "Authorization", "Cache-Control"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: false,
+		MaxAge:           12 * time.Hour,
+	}))
 	r.GET("/todos", getTodos)
 	r.POST("/todos", postTodos)
 	r.GET("/todos/:id", getTodoByID)
@@ -163,5 +173,14 @@ func main() {
 	{
 		auth.GET("hello", helloHandler)
 	}
+	// config := cors.DefaultConfig()
+	// config.AllowOrigins = []string{"http://localhost:5173"}
+	// r.Use(cors.New(config))
+	// r.Use(cors.New(cors.Config{
+	//   AllowOrigins:[]string{"*"},
+	//   AllowMethods:[]string{"GET","POST"},
+	//   AllowHeaders:[]string{"Origin"},
+	//   ExposeHeaders:[]string{"Content-Length"}
+	// }))
 	r.Run(":8080")
 }
