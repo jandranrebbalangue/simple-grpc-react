@@ -173,14 +173,5 @@ func main() {
 	{
 		auth.GET("hello", helloHandler)
 	}
-	// config := cors.DefaultConfig()
-	// config.AllowOrigins = []string{"http://localhost:5173"}
-	// r.Use(cors.New(config))
-	// r.Use(cors.New(cors.Config{
-	//   AllowOrigins:[]string{"*"},
-	//   AllowMethods:[]string{"GET","POST"},
-	//   AllowHeaders:[]string{"Origin"},
-	//   ExposeHeaders:[]string{"Content-Length"}
-	// }))
 	r.Run(":8080")
 }
