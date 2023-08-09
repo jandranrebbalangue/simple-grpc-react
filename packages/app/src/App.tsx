@@ -1,3 +1,4 @@
+import React from "react";
 import useSWR from "swr";
 import {
   CircularProgress,
@@ -9,8 +10,12 @@ import {
   TableRow,
 } from "@mui/material";
 import { TodosProps, fetcher, addTodo } from "./constants";
+import FormModal from "./components/FormModal";
 
 function App() {
+  const [open, setOpen] = React.useState<boolean>(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const { data, isLoading, mutate } = useSWR("/todos", fetcher);
   if (isLoading) return <CircularProgress />;
   return (
@@ -33,6 +38,11 @@ function App() {
           </TableBody>
         </Table>
       </TableContainer>
+      <FormModal
+        open={open}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+      />
       <button
         onClick={async () => {
           const newTodo = {

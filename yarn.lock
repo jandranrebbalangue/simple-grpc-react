@@ -644,6 +644,39 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
+"@tanstack/form-core@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@tanstack/form-core/-/form-core-0.0.11.tgz#11e4b9ee5375db3cb17efc53dd7d5774255b38ac"
+  integrity sha512-Sv7b9IG0XmBoDbDe0nXrTTl9xl05TA4ir0pwr/xJwNP683CNRIzBpug3/WVzWoQVLCvRvvmo3t12N75Ip8HQNg==
+  dependencies:
+    "@tanstack/store" "0.0.1-beta.89"
+
+"@tanstack/react-form@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-form/-/react-form-0.0.11.tgz#dc8306edcb5539f0bd56f13e45501054703b5809"
+  integrity sha512-76tyMuDVtHzWHSUSdYPIfpo06RexmSAg4dKMaBToH0yww8l1Y/PNKdoUGcmUHUUFstObm2ufw1VG2YAnsVWx8Q==
+  dependencies:
+    "@tanstack/form-core" "0.0.11"
+    "@tanstack/react-store" "0.0.1-beta.85"
+
+"@tanstack/react-store@0.0.1-beta.85":
+  version "0.0.1-beta.85"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-store/-/react-store-0.0.1-beta.85.tgz#dc3bf3ec30d9b7f539fda551fc07df11b798c7f6"
+  integrity sha512-5APLxQOHgws735Va5ndbS6aa9pIILcximTr5dQeEFRzCNqjLyJ6YHGDuqng9zLMLzCyNILmdEtpNW0tp5l/tNw==
+  dependencies:
+    "@tanstack/store" "0.0.1-beta.85"
+    use-sync-external-store "^1.2.0"
+
+"@tanstack/store@0.0.1-beta.85":
+  version "0.0.1-beta.85"
+  resolved "https://registry.yarnpkg.com/@tanstack/store/-/store-0.0.1-beta.85.tgz#d6f1d2c66787d15e796819b94be08de44be17cbf"
+  integrity sha512-gUn8i4mhS7V5yRTu6NosoKuUBfw4w36JHx0rg2MJ5kAiKukISoTqlzUKKKzmVvVPL6H1xwaDGEf6bmLzLlgZEQ==
+
+"@tanstack/store@0.0.1-beta.89":
+  version "0.0.1-beta.89"
+  resolved "https://registry.yarnpkg.com/@tanstack/store/-/store-0.0.1-beta.89.tgz#4ba77e66a34d7c6dbf33401daffcb505c3022823"
+  integrity sha512-YW2aAhsXI4QYLXRnxZzB7MgEah91itQcWAjN3GYg1HKHxPv/11T5bL1CUCSxFLTI0f+45uNRjsmof6eqsN3ECA==
+
 "@types/json-schema@^7.0.9":
   version "7.0.12"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.12.tgz#d70faba7039d5fca54c83c7dbab41051d2b6f6cb"
