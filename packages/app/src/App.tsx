@@ -1,5 +1,5 @@
-import React from "react";
-import useSWR from "swr";
+import React from "react"
+import useSWR from "swr"
 import {
   CircularProgress,
   Table,
@@ -7,17 +7,18 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
-} from "@mui/material";
-import { TodosProps, fetcher, addTodo } from "./constants";
-import FormModal from "./components/FormModal";
+  TableRow
+} from "@mui/material"
+import { TodosProps, fetcher, addTodo } from "./constants"
+import FormModal from "./components/FormModal"
 
 function App() {
-  const [open, setOpen] = React.useState<boolean>(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const { data, isLoading, mutate } = useSWR("/todos", fetcher);
-  if (isLoading) return <CircularProgress />;
+  const [open, setOpen] = React.useState<boolean>(false)
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+  const { data: payload, isLoading, mutate } = useSWR("/todos", fetcher)
+  const data = payload as TodosProps[]
+  if (isLoading) return <CircularProgress />
   return (
     <>
       <TableContainer>
@@ -47,17 +48,17 @@ function App() {
         onClick={async () => {
           const newTodo = {
             id: "3",
-            text: "oshi no ko",
-          };
+            text: "oshi no ko"
+          }
           await mutate(addTodo(newTodo), {
-            optimisticData: [newTodo],
-          });
+            optimisticData: [newTodo]
+          })
         }}
       >
         Add Todo
       </button>
     </>
-  );
+  )
 }
 
-export default App;
+export default App

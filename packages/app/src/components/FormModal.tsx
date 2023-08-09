@@ -1,7 +1,7 @@
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import React from "react";
-import { Input } from "@mui/material";
+import Input from "@mui/material/Input";
 import * as Yup from "yup";
 import { Form, Formik } from "formik";
 
@@ -20,8 +20,8 @@ const FormModal = ({
         <Formik
           initialValues={{ task: "" }}
           {...props}
-          onSubmit={async (values) => {
-            console.log("value onsubmit", values);
+          onSubmit={(values) => {
+            console.log("onsubmit values", values)
           }}
           validationSchema={Yup.object().shape({
             task: Yup.string().required(),
@@ -29,7 +29,7 @@ const FormModal = ({
         >
           {(props) => {
             const { values, handleChange, handleSubmit } = props;
-            console.log({ values });
+            console.log("values props", values)
             return (
               <Form onSubmit={handleSubmit} ref={ref}>
                 <Input onChange={handleChange} name="task" />
