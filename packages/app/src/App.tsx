@@ -10,7 +10,7 @@ import {
   TableRow
 } from "@mui/material"
 import { TodosProps, fetcher } from "./constants"
-import FormModal from "./components/FormModal"
+import FormDialog from "./components/FormDialog"
 
 function App() {
   const [open, setOpen] = React.useState<boolean>(false)
@@ -39,7 +39,7 @@ function App() {
           </TableBody>
         </Table>
       </TableContainer>
-      <FormModal
+      <FormDialog
         open={open}
         handleOpen={handleOpen}
         handleClose={handleClose}
