@@ -28,7 +28,7 @@ const FormModal = ({
     return (
       <div>
         <form.Provider>
-          <form {...form.getFormProps} ref={ref}>
+          <form {...form.getFormProps()}>
             <div>
               <form.Field
                 name="task"
@@ -36,7 +36,7 @@ const FormModal = ({
                 children={(field) => {
                   return (
                     <>
-                      <Input {...field.getInputProps} {...props} />
+                      <Input {...field.getInputProps()} {...props} ref={ref} />
                     </>
                   );
                 }}
