@@ -9,14 +9,14 @@ import {
   TableHead,
   TableRow
 } from "@mui/material"
-import { TodosProps, fetcher, addTodo } from "./constants"
+import { TodosProps, fetcher } from "./constants"
 import FormModal from "./components/FormModal"
 
 function App() {
   const [open, setOpen] = React.useState<boolean>(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
-  const { data: payload, isLoading, mutate } = useSWR("/todos", fetcher)
+  const { data: payload, isLoading } = useSWR("/todos", fetcher)
   const data = payload as TodosProps[]
   if (isLoading) return <CircularProgress />
   return (
@@ -44,19 +44,6 @@ function App() {
         handleOpen={handleOpen}
         handleClose={handleClose}
       />
-      <button
-        onClick={async () => {
-          const newTodo = {
-            id: "3",
-            text: "oshi no ko"
-          }
-          await mutate(addTodo(newTodo), {
-            optimisticData: [newTodo]
-          })
-        }}
-      >
-        Add Todo
-      </button>
     </>
   )
 }
