@@ -2,7 +2,8 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import React from "react";
 import { Input } from "@mui/material";
-import { useForm } from "@tanstack/react-form";
+import * as Yup from "yup";
+import { Form, Formik } from "formik";
 
 const FormModal = ({
   open = false,
@@ -14,50 +15,33 @@ const FormModal = ({
   handleClose: () => void;
 }) => {
   const MyForm = React.forwardRef<HTMLFormElement>((props, ref) => {
-    const form = useForm({
-      defaultValues: React.useMemo(
-        () => ({
-          task: "",
-        }),
-        [],
-      ),
-      onSubmit: async (data) => {
-        console.log({ data });
-      },
-    });
     return (
       <div>
-        <form.Provider>
-          <form {...form.getFormProps()}>
-            <div>
-              <form.Field
-                name="task"
-                onChange={(value) => (!value ? "Task is required" : value)}
-                children={(field) => {
-                  return (
-                    <>
-                      <Input {...field.getInputProps()} {...props} ref={ref} />
-                    </>
-                  );
-                }}
-              />
-            </div>
-            <form.Subscribe
-              {...{
-                selector: (state) =>
-                  [state.canSubmit, state.isSubmitting] as const,
-                children: ([canSubmit, isSubmitting]) => (
-                  <button type="submit" disabled={!canSubmit}>
-                    {isSubmitting ? "..." : "Submit"}
-                  </button>
-                ),
-              }}
-            />
-          </form>
-        </form.Provider>
+        <Formik
+          initialValues={{ task: "" }}
+          {...props}
+          onSubmit={async (values) => {
+            console.log("value onsubmit", values);
+          }}
+          validationSchema={Yup.object().shape({
+            task: Yup.string().required(),
+          })}
+        >
+          {(props) => {
+            const { values, handleChange, handleSubmit } = props;
+            console.log({ values });
+            return (
+              <Form onSubmit={handleSubmit} ref={ref}>
+                <Input onChange={handleChange} name="task" />
+                <Button type="submit">Submit</Button>
+              </Form>
+            );
+          }}
+        </Formik>
       </div>
     );
   });
+
   return (
     <div>
       <Button onClick={handleOpen}>Open Modal</Button>
