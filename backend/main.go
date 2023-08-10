@@ -10,10 +10,10 @@ import (
 
 type todo struct {
 	ID   string `json:"id"`
-	Text string `json:"text"`
+	Task string `json:"task"`
 }
 
-var todos = []todo{{ID: "1", Text: "Jujutsu Kaisen"}, {ID: "2", Text: "Engage Kiss"}}
+var todos = []todo{{ID: "1", Task: "Code simple task"}, {ID: "2", Task: "Learn Go"}}
 
 func getTodos(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, todos)
