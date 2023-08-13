@@ -26,14 +26,14 @@ function App() {
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>Anime</TableCell>
+              <TableCell>Task</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((item: TodosProps) => (
               <TableRow key={item.id}>
                 <TableCell>{item.id}</TableCell>
-                <TableCell>{item.text}</TableCell>
+                <TableCell>{item.task}</TableCell>
               </TableRow>
             ))}
           </TableBody>

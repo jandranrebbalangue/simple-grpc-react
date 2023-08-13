@@ -1,6 +1,6 @@
 export type TodosProps = {
   id: string
-  text: string
+  task: string
 }
 export const fetcher = (endpoint: string) =>
   fetch(`${import.meta.env.VITE_BASE_URL as string}${endpoint}`, {
