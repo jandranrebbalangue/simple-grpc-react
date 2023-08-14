@@ -10,11 +10,12 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 type Todo struct {
-	ID        uint   `json:"id" gorm:"primaryKey"`
+	ID        uint   `gorm:"primaryKey"`
 	Task      string `json:"task"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -27,12 +28,12 @@ func getTodos(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, todos)
 }
 
-func postTodos(c *gin.Context) {
+func postTodos(c *gin.Context, db *gorm.DB) {
 	var newTodo Todo
 	if err := c.BindJSON(&newTodo); err != nil {
 		return
 	}
-	todos = append(todos, newTodo)
+	db.Create(&newTodo)
 	c.IndentedJSON(http.StatusCreated, newTodo)
 }
 
@@ -57,6 +58,17 @@ func main() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
+		return
+	}
+
+	dsn := "host=localhost user=admin password=admin dbname=admin port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		DSN:                  dsn,
+		PreferSimpleProtocol: true,
+	}), &gorm.Config{})
+	if err != nil {
+		log.Fatal(err.Error())
+		return
 	}
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173"},
@@ -67,7 +79,9 @@ func main() {
 		MaxAge:           12 * time.Hour,
 	}))
 	r.GET("/todos", getTodos)
-	r.POST("/todos", postTodos)
+	r.POST("/add/todo", func(ctx *gin.Context) {
+		postTodos(ctx, db)
+	})
 	r.GET("/todos/:id", getTodoByID)
 	r.Run(":8080")
 }
