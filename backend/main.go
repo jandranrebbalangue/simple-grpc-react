@@ -15,11 +15,11 @@ import (
 )
 
 type Todo struct {
-	ID        uint   `gorm:"primaryKey"`
-	Task      string `json:"task"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	ID        uint           ` json:"id" gorm:"primaryKey"`
+	Task      string         `json:"task"`
+	CreatedAt time.Time      `json:"createdAt"`
+	UpdatedAt time.Time      `json:"updatedAt"`
+	DeletedAt gorm.DeletedAt `json:"deletedAt" gorm:"index"`
 }
 
 var todos = []Todo{}
