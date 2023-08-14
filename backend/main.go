@@ -15,7 +15,7 @@ import (
 )
 
 type Todo struct {
-	ID        uint           ` json:"id" gorm:"primaryKey"`
+	ID        uint           `json:"id" gorm:"primaryKey"`
 	Task      string         `json:"task"`
 	CreatedAt time.Time      `json:"createdAt"`
 	UpdatedAt time.Time      `json:"updatedAt"`
