@@ -1,28 +1,34 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"gorm.io/gorm"
 )
 
-type todo struct {
-	ID   string `json:"id"`
-	Task string `json:"task"`
+type Todo struct {
+	ID        uint   `json:"id" gorm:"primaryKey"`
+	Task      string `json:"task"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-var todos = []todo{{ID: "1", Task: "Code simple task"}, {ID: "2", Task: "Learn Go"}}
+var todos = []Todo{{ID: 1, Task: "Code simple task"}, {ID: 2, Task: "Learn Go"}}
 
 func getTodos(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, todos)
 }
 
 func postTodos(c *gin.Context) {
-	var newTodo todo
+	var newTodo Todo
 	if err := c.BindJSON(&newTodo); err != nil {
 		return
 	}
@@ -31,9 +37,14 @@ func postTodos(c *gin.Context) {
 }
 
 func getTodoByID(c *gin.Context) {
-	id := c.Param("id")
+	paramId := c.Param("id")
+	id, err := strconv.ParseUint(paramId, 10, 32)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
 	for _, v := range todos {
-		if v.ID == id {
+		if v.ID == uint(id) {
 			c.IndentedJSON(http.StatusOK, v)
 			return
 		}
