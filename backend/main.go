@@ -56,13 +56,18 @@ func getTodoByID(c *gin.Context) {
 
 func main() {
 	r := gin.Default()
-	err := godotenv.Load()
+	envFile, err := godotenv.Read(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 		return
 	}
+	postgresUsername := envFile["POSTGRES_USERNAME"]
+	postgresPassword := envFile["POSTGRES_PASSWORD"]
+	postgresPort := envFile["POSTGRES_PORT"]
+	postgresHostName := envFile["POSTGRES_HOST_NAME"]
+	postgresDb := envFile["POSTGRES_DATABASE"]
 
-	dsn := "host=localhost user=admin password=admin dbname=admin port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+	dsn := "host=" + postgresHostName + " user=" + postgresUsername + " password=" + postgresPassword + " dbname=" + postgresDb + " port=" + postgresPort + " sslmode=disable" + " TimeZone=Asia/Shanghai"
 	db, err := gorm.Open(postgres.New(postgres.Config{
 		DSN:                  dsn,
 		PreferSimpleProtocol: true,
