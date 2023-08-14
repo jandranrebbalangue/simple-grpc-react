@@ -3,7 +3,7 @@
   "private": "true",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/jandranrebbalangue/simple-gin-react.git",
+  "repository": "https://github.com/jandranrebbalangue/TodoApp.git",
   "author": "Jan Dranreb Balangue <jandranrebbalangue@gmail.com>",
   "license": "MIT",
   "scripts": {
