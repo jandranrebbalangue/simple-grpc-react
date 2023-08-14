@@ -22,10 +22,11 @@ type Todo struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-var todos = []Todo{{ID: 1, Task: "Code simple task"}, {ID: 2, Task: "Learn Go"}}
+var todos = []Todo{}
 
-func getTodos(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, todos)
+func getTodos(c *gin.Context, db *gorm.DB) {
+	db.Find(&todos)
+	c.JSON(http.StatusOK, todos)
 }
 
 func postTodos(c *gin.Context, db *gorm.DB) {
@@ -78,7 +79,9 @@ func main() {
 		AllowCredentials: false,
 		MaxAge:           12 * time.Hour,
 	}))
-	r.GET("/todos", getTodos)
+	r.GET("/todos", func(ctx *gin.Context) {
+		getTodos(ctx, db)
+	})
 	r.POST("/add/todo", func(ctx *gin.Context) {
 		postTodos(ctx, db)
 	})
