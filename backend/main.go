@@ -38,7 +38,7 @@ func postTodos(c *gin.Context, db *gorm.DB) {
 	c.IndentedJSON(http.StatusCreated, newTodo)
 }
 
-func getTodoByID(c *gin.Context) {
+func getTaskByID(c *gin.Context) {
 	paramId := c.Param("id")
 	id, err := strconv.ParseUint(paramId, 10, 32)
 	if err != nil {
@@ -84,12 +84,12 @@ func main() {
 		AllowCredentials: false,
 		MaxAge:           12 * time.Hour,
 	}))
-	r.GET("/todos", func(ctx *gin.Context) {
+	r.GET("/tasks", func(ctx *gin.Context) {
 		getTodos(ctx, db)
 	})
-	r.POST("/add/todo", func(ctx *gin.Context) {
+	r.POST("/tasks", func(ctx *gin.Context) {
 		postTodos(ctx, db)
 	})
-	r.GET("/todos/:id", getTodoByID)
+	r.GET("/tasks/:id", getTaskByID)
 	r.Run(":8080")
 }
