@@ -11,7 +11,7 @@ export const fetcher = (endpoint: string) =>
   }).then((res) => res.json())
 
 export async function addTodo(body: TodosProps) {
-  await fetch(`${import.meta.env.VITE_BASE_URL as string}/todos`, {
+  await fetch(`${import.meta.env.VITE_BASE_URL as string}/tasks`, {
     method: "POST",
     body: JSON.stringify(body)
   })
