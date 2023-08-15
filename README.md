@@ -9,7 +9,7 @@ A basic todo app built to learn Go (backend) and practice React (frontend) devel
 The backend provides the following API endpoints:
 
     GET /tasks: Get a list of all tasks
-    GET /task/:id: Get a task by id
+    GET /tasks/:id: Get a task by id
     POST /tasks: Create a new task
     PUT /tasks/:id: Update task details
     PATCH /tasks/:id: Mark a task as completed
