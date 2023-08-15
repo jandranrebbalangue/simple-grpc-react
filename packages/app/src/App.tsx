@@ -16,7 +16,7 @@ function App() {
   const [open, setOpen] = React.useState<boolean>(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
-  const { data: payload, isLoading } = useSWR("/todos", fetcher)
+  const { data: payload, isLoading } = useSWR("/tasks", fetcher)
   const data = payload as TodosProps[]
   if (isLoading) return <CircularProgress />
   return (
