@@ -7,6 +7,8 @@ import Button from "@mui/material/Button"
 import React from "react"
 import * as Yup from "yup"
 import { Form, Formik } from "formik"
+import { addTasks } from "../constants"
+import { mutate } from "swr"
 
 const FormDialog = ({
   open = false,
@@ -21,10 +23,13 @@ const FormDialog = ({
     return (
       <div>
         <Formik
-          initialValues={{ task: "" }}
+          initialValues={{ task: "", status: "Not Completed" }}
           {...props}
-          onSubmit={(values) => {
-            console.log("onsubmit values", values)
+          onSubmit={async (values) => {
+            const addTask = await mutate(addTasks(values), {
+              optimisticData: [values],
+            });
+            if (addTask?.optimisticData) handleClose()
           }}
           validationSchema={Yup.object().shape({
             task: Yup.string().required()
