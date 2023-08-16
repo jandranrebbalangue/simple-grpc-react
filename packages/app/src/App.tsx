@@ -35,24 +35,22 @@ function App() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
               <TableCell>Task</TableCell>
-              <TableCell>Delete</TableCell>
-              <TableCell>Complete</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((item: TodosProps) => (
               <TableRow key={item.id}>
-                <TableCell>{item.id}</TableCell>
                 <TableCell style={{ textDecorationLine: item.status === "Completed" ? "line-through" : "none" }}>{item.task}</TableCell>
+                <TableCell>{item.status}</TableCell>
                 <TableCell>
                   <Button onClick={() => {
                     setOpenConfirmDialog(true)
                     setDeleteId(item.id)
-                  }}>Delete</Button>
-                </TableCell>
-                <TableCell>
+                  }} variant="contained">Delete</Button>
+
                   <Checkbox onChange={async (event) => {
                     const body = {
                       status: "Completed"
