@@ -52,9 +52,14 @@ func getTaskByID(c *gin.Context) {
 			return
 		}
 	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "todo not found"})
+	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "task not found"})
 }
 
+func deleteTaskById(c *gin.Context, db *gorm.DB) {
+	id := c.Param("id")
+	db.Delete(&Todo{}, id)
+	c.IndentedJSON(http.StatusOK, gin.H{"message": "Delete successfully"})
+}
 func main() {
 	r := gin.Default()
 	envFile, err := godotenv.Read(".env")
@@ -79,7 +84,7 @@ func main() {
 	}
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173"},
-		AllowMethods:     []string{"GET", "POST"},
+		AllowMethods:     []string{"GET", "POST", "DELETE"},
 		AllowHeaders:     []string{"Content-Type", "Content-Length", "Accept-Encoding", "Authorization", "Cache-Control"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: false,
@@ -90,6 +95,9 @@ func main() {
 	})
 	r.POST("/tasks", func(ctx *gin.Context) {
 		postTodos(ctx, db)
+	})
+	r.DELETE("/tasks/:id", func(ctx *gin.Context) {
+		deleteTaskById(ctx, db)
 	})
 	r.GET("/tasks/:id", getTaskByID)
 	r.Run(":8080")
