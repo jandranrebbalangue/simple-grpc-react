@@ -46,7 +46,6 @@ function App() {
                 </TableCell>
                 <TableCell>
                   <Checkbox onChange={async (event) => {
-                    console.log(event.target.checked)
                     const body = {
                       status: "Completed"
                     }
