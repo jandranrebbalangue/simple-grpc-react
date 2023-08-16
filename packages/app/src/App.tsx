@@ -2,7 +2,6 @@ import React from "react"
 import useSWR from "swr"
 import {
   Button,
-  Checkbox,
   CircularProgress,
   Table,
   TableBody,
@@ -46,22 +45,17 @@ function App() {
                 <TableCell style={{ textDecorationLine: item.status === "Completed" ? "line-through" : "none" }}>{item.task}</TableCell>
                 <TableCell>{item.status}</TableCell>
                 <TableCell>
-                  <Button onClick={() => {
-                    setOpenConfirmDialog(true)
-                    setDeleteId(item.id)
-                  }} variant="contained">Delete</Button>
-
-                  <Checkbox onChange={async (event) => {
+                  <Button onClick={async () => {
                     const body = {
                       status: "Completed"
                     }
-                    if (event.target.checked) {
-                      await updateStatus(item.id, body)
-                    } else {
-                      body.status = "Not Completed"
-                      await updateStatus(item.id, body)
-                    }
-                  }} value={item.status === "Completed" ? "on" : undefined} defaultValue={"off"} />
+                    await updateStatus(item.id, body)
+                  }} disabled={item.status === "Completed" ? true : false} variant="contained">Complete</Button>
+                  <Button onClick={() => {
+                    setOpenConfirmDialog(true)
+                    setDeleteId(item.id)
+                  }} variant="contained" color="error" style={{ marginLeft: "10px" }} disabled={item.status === "Completed" ? true : false}>Delete</Button>
+
                 </TableCell>
               </TableRow>
             ))}
