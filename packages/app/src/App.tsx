@@ -11,7 +11,7 @@ import {
   TableHead,
   TableRow
 } from "@mui/material"
-import { TodosProps, deleteTasks, fetcher, updateStatus } from "./constants"
+import { TodosProps, deleteTask, fetcher, updateStatus } from "./constants"
 import FormDialog from "./components/FormDialog"
 
 function App() {
@@ -20,9 +20,7 @@ function App() {
   const handleClose = () => setOpen(false)
   const { data: payload, isLoading } = useSWR("/tasks", fetcher)
   const data = payload as TodosProps[]
-  const deleteTask = async (id: number) => {
-    await deleteTasks(id)
-  }
+
   if (isLoading) return <CircularProgress />
   return (
     <>

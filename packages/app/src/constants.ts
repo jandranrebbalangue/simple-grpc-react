@@ -6,12 +6,12 @@ export type TodosProps = {
   updatedAt: string
   deletedAt: string
 }
-export type AddTask = {
+export type AddTaskProps = {
   task: string
   status: string
 }
 
-export type UpdateStatus = {
+export type UpdateStatusProps = {
   status: string
 }
 export const fetcher = (endpoint: string) =>
@@ -19,20 +19,20 @@ export const fetcher = (endpoint: string) =>
     method: "GET"
   }).then((res) => res.json())
 
-export async function addTasks(body: AddTask) {
+export async function addTask(body: AddTaskProps) {
   await fetch(`${import.meta.env.VITE_BASE_URL as string}/tasks`, {
     method: "POST",
     body: JSON.stringify(body)
   })
 }
 
-export async function deleteTasks(id: number) {
+export async function deleteTask(id: number) {
   await fetch(`${import.meta.env.VITE_BASE_URL as string}/tasks/${id}`, {
     method: "DELETE",
   })
 }
 
-export async function updateStatus(id: number, body: UpdateStatus) {
+export async function updateStatus(id: number, body: UpdateStatusProps) {
   await fetch(`${import.meta.env.VITE_BASE_URL as string}/tasks/${id}`, {
     method: "PATCH",
     body: JSON.stringify(body)
