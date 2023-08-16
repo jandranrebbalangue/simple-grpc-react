@@ -23,7 +23,6 @@ function App() {
   const deleteTask = async (id: number) => {
     await deleteTasks(id)
   }
-  console.log({ data })
   if (isLoading) return <CircularProgress />
   return (
     <>
