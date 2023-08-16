@@ -9,6 +9,10 @@ export type AddTask = {
   task: string
   status: string
 }
+
+export type UpdateStatus = {
+  status: string
+}
 export const fetcher = (endpoint: string) =>
   fetch(`${import.meta.env.VITE_BASE_URL as string}${endpoint}`, {
     method: "GET"
@@ -24,5 +28,12 @@ export async function addTasks(body: AddTask) {
 export async function deleteTasks(id: number) {
   await fetch(`${import.meta.env.VITE_BASE_URL as string}/tasks/${id}`, {
     method: "DELETE",
+  })
+}
+
+export async function updateStatus(id: number, body: UpdateStatus) {
+  await fetch(`${import.meta.env.VITE_BASE_URL as string}/tasks/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(body)
   })
 }

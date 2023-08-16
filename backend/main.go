@@ -14,7 +14,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type Todo struct {
+type Task struct {
 	ID        uint           `json:"id" gorm:"primaryKey"`
 	Task      string         `json:"task"`
 	Status    string         `json:"status"`
@@ -23,7 +23,7 @@ type Todo struct {
 	DeletedAt gorm.DeletedAt `json:"deletedAt" gorm:"index"`
 }
 
-var todos = []Todo{}
+var todos = []Task{}
 
 func getTodos(c *gin.Context, db *gorm.DB) {
 	db.Find(&todos)
@@ -31,12 +31,12 @@ func getTodos(c *gin.Context, db *gorm.DB) {
 }
 
 func postTodos(c *gin.Context, db *gorm.DB) {
-	var newTodo Todo
-	if err := c.BindJSON(&newTodo); err != nil {
+	var newTask Task
+	if err := c.BindJSON(&newTask); err != nil {
 		return
 	}
-	db.Create(&newTodo)
-	c.IndentedJSON(http.StatusCreated, newTodo)
+	db.Create(&newTask)
+	c.IndentedJSON(http.StatusCreated, newTask)
 }
 
 func getTaskByID(c *gin.Context) {
@@ -57,9 +57,20 @@ func getTaskByID(c *gin.Context) {
 
 func deleteTaskById(c *gin.Context, db *gorm.DB) {
 	id := c.Param("id")
-	db.Delete(&Todo{}, id)
+	db.Delete(&Task{}, id)
 	c.IndentedJSON(http.StatusOK, gin.H{"message": "Delete successfully"})
 }
+
+func updateStatus(c *gin.Context, db *gorm.DB) {
+	var currentTask Task
+	if err := c.BindJSON(&currentTask); err != nil {
+		return
+	}
+	id := c.Param("id")
+	db.Model(&Task{}).Where("id=?", id).Update("status", currentTask.Status)
+	c.IndentedJSON(http.StatusOK, currentTask)
+}
+
 func main() {
 	r := gin.Default()
 	envFile, err := godotenv.Read(".env")
@@ -84,7 +95,7 @@ func main() {
 	}
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173"},
-		AllowMethods:     []string{"GET", "POST", "DELETE"},
+		AllowMethods:     []string{"GET", "POST", "DELETE", "PATCH"},
 		AllowHeaders:     []string{"Content-Type", "Content-Length", "Accept-Encoding", "Authorization", "Cache-Control"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: false,
@@ -98,6 +109,9 @@ func main() {
 	})
 	r.DELETE("/tasks/:id", func(ctx *gin.Context) {
 		deleteTaskById(ctx, db)
+	})
+	r.PATCH("/tasks/:id", func(ctx *gin.Context) {
+		updateStatus(ctx, db)
 	})
 	r.GET("/tasks/:id", getTaskByID)
 	r.Run(":8080")

@@ -2,6 +2,7 @@ import React from "react"
 import useSWR from "swr"
 import {
   Button,
+  Checkbox,
   CircularProgress,
   Table,
   TableBody,
@@ -10,7 +11,7 @@ import {
   TableHead,
   TableRow
 } from "@mui/material"
-import { TodosProps, deleteTasks, fetcher } from "./constants"
+import { TodosProps, deleteTasks, fetcher, updateStatus } from "./constants"
 import FormDialog from "./components/FormDialog"
 
 function App() {
@@ -31,6 +32,8 @@ function App() {
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>Task</TableCell>
+              <TableCell>Delete</TableCell>
+              <TableCell>Complete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -40,6 +43,21 @@ function App() {
                 <TableCell>{item.task}</TableCell>
                 <TableCell>
                   <Button onClick={() => deleteTask(item.id)}>Delete</Button>
+                </TableCell>
+                <TableCell>
+                  <Checkbox onChange={async (event) => {
+                    console.log(event.target.checked)
+                    const body = {
+                      status: "Completed"
+                    }
+                    if (event.target.checked) {
+                      await updateStatus(item.id, body)
+                    } else {
+                      body.status = "Not Completed"
+                      await updateStatus(item.id, body)
+                    }
+                    console.log({ body })
+                  }} />
                 </TableCell>
               </TableRow>
             ))}
