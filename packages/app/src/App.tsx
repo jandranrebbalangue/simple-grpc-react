@@ -1,6 +1,7 @@
 import React from "react"
 import useSWR from "swr"
 import {
+  Button,
   CircularProgress,
   Table,
   TableBody,
@@ -9,7 +10,7 @@ import {
   TableHead,
   TableRow
 } from "@mui/material"
-import { TodosProps, fetcher } from "./constants"
+import { TodosProps, deleteTasks, fetcher } from "./constants"
 import FormDialog from "./components/FormDialog"
 
 function App() {
@@ -18,6 +19,9 @@ function App() {
   const handleClose = () => setOpen(false)
   const { data: payload, isLoading } = useSWR("/tasks", fetcher)
   const data = payload as TodosProps[]
+  const deleteTask = async (id: number) => {
+    await deleteTasks(id)
+  }
   if (isLoading) return <CircularProgress />
   return (
     <>
@@ -34,6 +38,9 @@ function App() {
               <TableRow key={item.id}>
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.task}</TableCell>
+                <TableCell>
+                  <Button onClick={() => deleteTask(item.id)}>Delete</Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

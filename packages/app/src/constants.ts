@@ -1,5 +1,5 @@
 export type TodosProps = {
-  id: string
+  id: number
   task: string
   createdAt: string
   updatedAt: string
@@ -18,5 +18,11 @@ export async function addTasks(body: AddTask) {
   await fetch(`${import.meta.env.VITE_BASE_URL as string}/tasks`, {
     method: "POST",
     body: JSON.stringify(body)
+  })
+}
+
+export async function deleteTasks(id: number) {
+  await fetch(`${import.meta.env.VITE_BASE_URL as string}/tasks/${id}`, {
+    method: "DELETE",
   })
 }
