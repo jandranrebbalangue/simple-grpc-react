@@ -23,6 +23,7 @@ function App() {
   const deleteTask = async (id: number) => {
     await deleteTasks(id)
   }
+  console.log({ data })
   if (isLoading) return <CircularProgress />
   return (
     <>
@@ -40,7 +41,7 @@ function App() {
             {data.map((item: TodosProps) => (
               <TableRow key={item.id}>
                 <TableCell>{item.id}</TableCell>
-                <TableCell>{item.task}</TableCell>
+                <TableCell style={{ textDecorationLine: item.status === "Completed" ? "line-through" : "none" }}>{item.task}</TableCell>
                 <TableCell>
                   <Button onClick={() => deleteTask(item.id)}>Delete</Button>
                 </TableCell>
@@ -55,8 +56,7 @@ function App() {
                       body.status = "Not Completed"
                       await updateStatus(item.id, body)
                     }
-                    console.log({ body })
-                  }} />
+                  }} value={item.status === "Completed" ? "on" : undefined} defaultValue={"off"} />
                 </TableCell>
               </TableRow>
             ))}
