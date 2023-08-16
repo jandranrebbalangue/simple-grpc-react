@@ -13,14 +13,21 @@ import {
 } from "@mui/material"
 import { TodosProps, deleteTask, fetcher, updateStatus } from "./constants"
 import FormDialog from "./components/FormDialog"
+import ConfirmationDialog from "./components/ConfirmDialog"
 
 function App() {
   const [open, setOpen] = React.useState<boolean>(false)
+  const [openConfirmDialog, setOpenConfirmDialog] = React.useState<boolean>(false)
+  const [deleteId, setDeleteId] = React.useState<number>(0)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
+  const handleCancel = () => setOpenConfirmDialog(false)
   const { data: payload, isLoading } = useSWR("/tasks", fetcher)
   const data = payload as TodosProps[]
-
+  const deleteCurrentTask = async () => {
+    await deleteTask(deleteId)
+    setOpenConfirmDialog(false)
+  }
   if (isLoading) return <CircularProgress />
   return (
     <>
@@ -40,7 +47,10 @@ function App() {
                 <TableCell>{item.id}</TableCell>
                 <TableCell style={{ textDecorationLine: item.status === "Completed" ? "line-through" : "none" }}>{item.task}</TableCell>
                 <TableCell>
-                  <Button onClick={() => deleteTask(item.id)}>Delete</Button>
+                  <Button onClick={() => {
+                    setOpenConfirmDialog(true)
+                    setDeleteId(item.id)
+                  }}>Delete</Button>
                 </TableCell>
                 <TableCell>
                   <Checkbox onChange={async (event) => {
@@ -65,6 +75,9 @@ function App() {
         handleOpen={handleOpen}
         handleClose={handleClose}
       />
+      {
+        openConfirmDialog && <ConfirmationDialog deleteTask={deleteCurrentTask} open={openConfirmDialog} handleCancel={handleCancel} />
+      }
     </>
   )
 }
