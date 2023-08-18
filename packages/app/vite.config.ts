@@ -6,7 +6,7 @@ dotenv.config();
 // https://vitejs.dev/config/
 export default defineConfig({
   define: {
-    "import.meta.env.VITE_BASE_URL": JSON.stringify(process.env.VITE_BASE_URL),
+    "import.meta.env.API_ENDPOINT": JSON.stringify(process.env.API_ENDPOINT),
   },
   plugins: [react()],
 });
