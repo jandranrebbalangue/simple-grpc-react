@@ -10,7 +10,10 @@ import {
   TableHead,
   TableRow
 } from "@mui/material"
-import { TodosProps, deleteTask, fetcher, updateStatus } from "./constants"
+import { TodosProps } from "./types"
+import { deleteTask } from "./utils/deleteTask"
+import { fetcher } from "./utils/fetcher"
+import { updateStatus } from "./utils/updateStatus"
 import FormDialog from "./components/FormDialog"
 import ConfirmationDialog from "./components/ConfirmDialog"
 

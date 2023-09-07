@@ -1,5 +1,5 @@
 import useSWR from "swr"
-import { fetcher } from "../constants"
+import { fetcher } from "../utils/fetcher"
 export default function FetchById(id: string) {
   const { data, error, isLoading } = useSWR(`/tasks/${id}`, fetcher)
   return {
