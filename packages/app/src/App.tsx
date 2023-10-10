@@ -57,6 +57,7 @@ function App() {
                       status: "Completed"
                     }
                     await updateStatus(item.id, body)
+                    await mutate("/tasks")
                   }} disabled={item.status === "Completed" ? true : false} variant="contained">Complete</Button>
                   <Button onClick={() => {
                     setOpenConfirmDialog(true)
