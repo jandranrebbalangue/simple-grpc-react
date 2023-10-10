@@ -20,8 +20,9 @@ import useTodoStore from "./stores/store"
 
 function App() {
   const setDeleteId = useTodoStore((state) => state.deleteId)
-  const deleteId = useTodoStore((state) => state.id) as number
-  const [open, setOpen] = React.useState<boolean>(false)
+  const deleteId = useTodoStore((state) => state.id)
+  const setOpen = useTodoStore((state) => state.openDialog)
+  const open = useTodoStore((state) => state.open)
   const [openConfirmDialog, setOpenConfirmDialog] = React.useState<boolean>(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
