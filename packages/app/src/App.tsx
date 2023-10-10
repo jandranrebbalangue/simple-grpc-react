@@ -43,7 +43,7 @@ function App() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item: TodosProps) => (
+            {data?.map((item: TodosProps) => (
               <TableRow key={item.id}>
                 <TableCell style={{ textDecorationLine: item.status === "Completed" ? "line-through" : "none" }}>{item.task}</TableCell>
                 <TableCell>{item.status}</TableCell>
