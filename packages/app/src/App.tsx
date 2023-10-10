@@ -53,10 +53,7 @@ function App() {
                 <TableCell>{item.status}</TableCell>
                 <TableCell>
                   <Button onClick={async () => {
-                    const body = {
-                      status: "Completed"
-                    }
-                    await updateStatus(item.id, body)
+                    await updateStatus(item.id, { status: "Completed" })
                     await mutate("/tasks")
                   }} disabled={item.status === "Completed" ? true : false} variant="contained">Complete</Button>
                   <Button onClick={() => {
