@@ -19,9 +19,9 @@ import ConfirmationDialog from "./components/ConfirmDialog"
 import useTodoStore from "./stores/store"
 
 function App() {
-  const setDeleteId = useTodoStore((state) => state.deleteId)
+  const setDeleteId = useTodoStore((state) => state.setDeleteId)
   const deleteId = useTodoStore((state) => state.id)
-  const setOpen = useTodoStore((state) => state.openDialog)
+  const setOpen = useTodoStore((state) => state.setOpen)
   const open = useTodoStore((state) => state.open)
   const [openConfirmDialog, setOpenConfirmDialog] = React.useState<boolean>(false)
   const handleOpen = () => setOpen(true)

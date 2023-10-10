@@ -9,8 +9,8 @@ type State = {
 type Action = {
   addTask: (task: State["task"], status: State["status"]) => void
   updateStatus: (status: State["status"]) => void
-  deleteId: (id: State["id"]) => void
-  openDialog: (open: State["open"]) => void
+  setDeleteId: (id: State["id"]) => void
+  setOpen: (open: State["open"]) => void
 }
 const useTodoStore = create<State & Action>((set) => ({
   task: "",
@@ -19,7 +19,7 @@ const useTodoStore = create<State & Action>((set) => ({
   open: false,
   addTask: (task, status) => set(() => ({ task, status })),
   updateStatus: (status) => set(() => ({ status })),
-  deleteId: (id) => set(() => ({ id })),
-  openDialog: (open) => set(() => ({ open }))
+  setDeleteId: (id) => set(() => ({ id })),
+  setOpen: (open) => set(() => ({ open }))
 }))
 export default useTodoStore
