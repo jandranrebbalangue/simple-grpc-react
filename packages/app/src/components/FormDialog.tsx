@@ -8,6 +8,7 @@ import React from "react"
 import * as Yup from "yup"
 import { Form, Formik } from "formik"
 import { addTask } from "../utils/addTask"
+import useTodoStore from "../stores/store"
 import { mutate } from "swr"
 
 const FormDialog = ({
@@ -19,25 +20,25 @@ const FormDialog = ({
   handleOpen: React.MouseEventHandler<HTMLButtonElement>
   handleClose: () => void
 }) => {
+  const task = useTodoStore((state) => state.task)
+  const status = useTodoStore((state) => state.status)
   const MyForm = React.forwardRef<HTMLFormElement>((props, ref) => {
     return (
       <div>
         <Formik
-          initialValues={{ task: "", status: "Not Completed" }}
+          initialValues={{ task, status }}
           {...props}
           onSubmit={async (values) => {
-            await mutate(addTask(values), {
-              optimisticData: [values],
-            });
+            await addTask(values)
             handleClose()
+            await mutate("/tasks")
           }}
           validationSchema={Yup.object().shape({
             task: Yup.string().required()
           })}
         >
           {(props) => {
-            const { values, handleChange, handleSubmit } = props
-            console.log("values props", values)
+            const { handleChange, handleSubmit } = props
             return (
               <Form onSubmit={handleSubmit} ref={ref}>
                 <TextField

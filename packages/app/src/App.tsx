@@ -1,5 +1,5 @@
 import React from "react"
-import useSWR from "swr"
+import useSWR, { mutate } from "swr"
 import {
   Button,
   CircularProgress,
@@ -16,11 +16,13 @@ import { fetcher } from "./utils/fetcher"
 import { updateStatus } from "./utils/updateStatus"
 import FormDialog from "./components/FormDialog"
 import ConfirmationDialog from "./components/ConfirmDialog"
+import useTodoStore from "./stores/store"
 
 function App() {
+  const setDeleteId = useTodoStore((state) => state.deleteId)
+  const deleteId = useTodoStore((state) => state.id) as number
   const [open, setOpen] = React.useState<boolean>(false)
   const [openConfirmDialog, setOpenConfirmDialog] = React.useState<boolean>(false)
-  const [deleteId, setDeleteId] = React.useState<number>(0)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const handleCancel = () => setOpenConfirmDialog(false)
@@ -29,6 +31,7 @@ function App() {
   const deleteCurrentTask = async () => {
     await deleteTask(deleteId)
     setOpenConfirmDialog(false)
+    await mutate("/tasks")
   }
   if (isLoading) return <CircularProgress />
   return (
