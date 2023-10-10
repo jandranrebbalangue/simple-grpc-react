@@ -1,4 +1,3 @@
-import React from "react"
 import useSWR, { mutate } from "swr"
 import {
   Button,
@@ -23,7 +22,8 @@ function App() {
   const deleteId = useTodoStore((state) => state.id)
   const setOpen = useTodoStore((state) => state.setOpen)
   const open = useTodoStore((state) => state.open)
-  const [openConfirmDialog, setOpenConfirmDialog] = React.useState<boolean>(false)
+  const setOpenConfirmDialog = useTodoStore((state) => state.setOpenConfirmDialog)
+  const openConfirmDialog = useTodoStore((state) => state.openConfirmDialog)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const handleCancel = () => setOpenConfirmDialog(false)
