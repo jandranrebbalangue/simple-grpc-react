@@ -114,5 +114,8 @@ func main() {
 		updateStatus(ctx, db)
 	})
 	r.GET("/tasks/:id", getTaskByID)
-	r.Run(":8080")
+	errs := r.Run(":8080")
+	if errs != nil {
+		log.Fatal(errs)
+	}
 }
