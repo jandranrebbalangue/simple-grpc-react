@@ -14,7 +14,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type Task struct {
+type Todo struct {
 	ID        uint           `json:"id" gorm:"primaryKey"`
 	Task      string         `json:"task"`
 	Status    string         `json:"status"`
@@ -23,7 +23,7 @@ type Task struct {
 	DeletedAt gorm.DeletedAt `json:"deletedAt" gorm:"index"`
 }
 
-var todos = []Task{}
+var todos = []Todo{}
 
 func getTodos(c *gin.Context, db *gorm.DB) {
 	db.Find(&todos)
@@ -31,7 +31,7 @@ func getTodos(c *gin.Context, db *gorm.DB) {
 }
 
 func postTodos(c *gin.Context, db *gorm.DB) {
-	var newTask Task
+	var newTask Todo
 	if err := c.BindJSON(&newTask); err != nil {
 		return
 	}
@@ -57,17 +57,17 @@ func getTaskByID(c *gin.Context) {
 
 func deleteTaskById(c *gin.Context, db *gorm.DB) {
 	id := c.Param("id")
-	db.Delete(&Task{}, id)
+	db.Delete(&Todo{}, id)
 	c.IndentedJSON(http.StatusOK, gin.H{"message": "Delete successfully"})
 }
 
 func updateStatus(c *gin.Context, db *gorm.DB) {
-	var currentTask Task
+	var currentTask Todo
 	if err := c.BindJSON(&currentTask); err != nil {
 		return
 	}
 	id := c.Param("id")
-	db.Model(&Task{}).Where("id=?", id).Update("status", currentTask.Status)
+	db.Model(&Todo{}).Where("id=?", id).Update("status", currentTask.Status)
 	c.IndentedJSON(http.StatusOK, currentTask)
 }
 
@@ -114,5 +114,8 @@ func main() {
 		updateStatus(ctx, db)
 	})
 	r.GET("/tasks/:id", getTaskByID)
-	r.Run(":8080")
+	errs := r.Run(":8080")
+	if errs != nil {
+		log.Fatal(errs)
+	}
 }

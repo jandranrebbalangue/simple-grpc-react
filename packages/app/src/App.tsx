@@ -1,5 +1,4 @@
-import React from "react"
-import useSWR from "swr"
+import useSWR, { mutate } from "swr"
 import {
   Button,
   CircularProgress,
@@ -16,11 +15,15 @@ import { fetcher } from "./utils/fetcher"
 import { updateStatus } from "./utils/updateStatus"
 import FormDialog from "./components/FormDialog"
 import ConfirmationDialog from "./components/ConfirmDialog"
+import useTodoStore from "./stores/store"
 
 function App() {
-  const [open, setOpen] = React.useState<boolean>(false)
-  const [openConfirmDialog, setOpenConfirmDialog] = React.useState<boolean>(false)
-  const [deleteId, setDeleteId] = React.useState<number>(0)
+  const setDeleteId = useTodoStore((state) => state.setDeleteId)
+  const deleteId = useTodoStore((state) => state.id)
+  const setOpen = useTodoStore((state) => state.setOpen)
+  const open = useTodoStore((state) => state.open)
+  const setOpenConfirmDialog = useTodoStore((state) => state.setOpenConfirmDialog)
+  const openConfirmDialog = useTodoStore((state) => state.openConfirmDialog)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const handleCancel = () => setOpenConfirmDialog(false)
@@ -29,6 +32,7 @@ function App() {
   const deleteCurrentTask = async () => {
     await deleteTask(deleteId)
     setOpenConfirmDialog(false)
+    await mutate("/tasks")
   }
   if (isLoading) return <CircularProgress />
   return (
@@ -43,16 +47,14 @@ function App() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item: TodosProps) => (
+            {data?.map((item: TodosProps) => (
               <TableRow key={item.id}>
                 <TableCell style={{ textDecorationLine: item.status === "Completed" ? "line-through" : "none" }}>{item.task}</TableCell>
                 <TableCell>{item.status}</TableCell>
                 <TableCell>
                   <Button onClick={async () => {
-                    const body = {
-                      status: "Completed"
-                    }
-                    await updateStatus(item.id, body)
+                    await updateStatus(item.id, { status: "Completed" })
+                    await mutate("/tasks")
                   }} disabled={item.status === "Completed" ? true : false} variant="contained">Complete</Button>
                   <Button onClick={() => {
                     setOpenConfirmDialog(true)
