@@ -1,20 +1,22 @@
 {
   "name": "simple-go-react",
-  "private": "true",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/jandranrebbalangue/TodoApp.git",
   "author": "Jan Dranreb Balangue <jandranrebbalangue@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start:backend": "cd backend && go run main.go",
-    "start:app": "yarn workspace app dev",
+    "dev": "concurrently -r  \"npm:dev:*\"",
+    "dev:backend": "cd backend && go run main.go",
+    "dev:app": "yarn workspace app dev",
     "start:db": "./scripts/start.sh"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "backend/*"
   ],
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "husky": "^8.0.3",
     "knip": "^2.27.1",
     "lint-staged": "^13.2.3",
